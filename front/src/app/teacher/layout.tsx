@@ -18,4 +18,4 @@ export default function TeacherLayout({
       </main>
     </div>
   );
-}
+}
