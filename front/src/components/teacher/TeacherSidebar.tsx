@@ -3,9 +3,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard, PlusCircle, FlaskConical,
-  Inbox, BarChart2
+  Inbox, BarChart2,
+  LogOut
 } from 'lucide-react';
-
+import { Button } from '../ui/button';
+import { useRouter } from 'next/navigation';
 const navItems = [
   { label: 'Dashboard',        href: '/teacher',             icon: LayoutDashboard, section: 'Overview' },
   { label: 'Create Assignment',href: '/teacher/create',      icon: PlusCircle,      section: 'Labs' },
@@ -16,7 +18,7 @@ const navItems = [
 
 export default function TeacherSidebar() {
   const path = usePathname();
-
+  const router = useRouter();
   return (
     <aside className="w-[230px] flex-shrink-0 bg-[#141720] border-r border-[#272c3a]
                       flex flex-col h-screen sticky top-0">
@@ -62,16 +64,19 @@ export default function TeacherSidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-[#272c3a]">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#f0b429] to-[#e07b00]
-                          flex items-center justify-center text-[12px] font-bold text-black">
-            DR
+      <div className='px-4 pb-6'>
+        <div className='flex items-center gap-3 p-3 rounded-xl bg-[#1a1f2c] border border-[#2d3445]'>
+          <div className='bg-[#f0b429] rounded-full w-8 h-8 flex items-center justify-center'>
+            <span className='text-[#141720] font-bold text-xs'>LY</span>
           </div>
-          <div>
-            <div className="text-[13px] font-semibold text-white">Dr. Rivera</div>
-            <div className="text-[11px] text-[#7a80a0]">Instructor · CS Dept</div>
+
+          <div className='flex-1 min-w-0'>
+            <div className='text-white font-semibold text-sm truncate'>Lyhour</div>
           </div>
+
+          <Button  onClick={() => router.push('/login')} size="sm" className='bg-transparent border border-[#3d4561] hover:bg-[#2d3445] text-[#7a80a0] hover:text-white h-8'>
+            <LogOut size={14}/>
+          </Button>
         </div>
       </div>
     </aside>
