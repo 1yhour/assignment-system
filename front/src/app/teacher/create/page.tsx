@@ -34,28 +34,32 @@ export default function CreateLabPage() {
 
   const rubricTotal = (form.criteria ?? []).reduce((s, c) => s + c.maxPoints, 0);
 
+  const fieldClass = `w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5
+    text-sm text-slate-800 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-50
+    transition-colors placeholder:text-slate-400`;
+
   return (
-    <div>
+    <div className="min-h-screen bg-slate-50">
       {/* Topbar */}
-      <div className="sticky top-0 z-10 bg-[#0d0f12] border-b border-[#272c3a] px-8 py-5
-                      flex items-center justify-between">
+      <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-8 py-5
+                      flex items-center justify-between shadow-sm">
         <div>
-          <h1 className="text-2xl font-bold text-white" style={{fontFamily:'DM Serif Display,serif'}}>
+          <h1 className="text-2xl font-bold text-slate-800" style={{fontFamily:'DM Serif Display,serif'}}>
             Create Lab Assignment
           </h1>
-          <p className="text-sm text-[#7a80a0] mt-1">
-            Fill in details, upload materials & define rubric
+          <p className="text-sm text-slate-500 mt-1">
+            Fill in details, upload materials &amp; define rubric
           </p>
         </div>
         <div className="flex gap-3">
           <button onClick={() => handleSubmit(false)}
-                  className="border border-[#272c3a] text-white text-sm font-semibold
-                             px-4 py-2 rounded-lg hover:border-[#f0b429] transition-colors">
+                  className="border border-slate-200 text-slate-700 text-sm font-semibold
+                             px-4 py-2 rounded-lg hover:border-indigo-400 hover:text-indigo-600 transition-colors bg-white shadow-sm">
             Save Draft
           </button>
           <button onClick={() => handleSubmit(true)} disabled={saving}
-                  className="bg-[#f0b429] text-[#0d0f12] font-bold text-sm
-                             px-4 py-2 rounded-lg hover:bg-[#e0a820] transition-colors disabled:opacity-50">
+                  className="bg-indigo-600 text-white font-bold text-sm
+                             px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 shadow-sm">
             {saving ? 'Publishing...' : 'Publish'}
           </button>
         </div>
@@ -66,26 +70,24 @@ export default function CreateLabPage() {
           {/* LEFT */}
           <div className="space-y-5">
             {/* Details Card */}
-            <div className="bg-[#141720] border border-[#272c3a] rounded-xl overflow-hidden">
-              <div className="px-5 py-4 border-b border-[#272c3a] font-bold text-sm">Lab Details</div>
+            <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+              <div className="px-5 py-4 border-b border-slate-100 font-bold text-sm text-slate-700">Lab Details</div>
               <div className="p-5 space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] uppercase tracking-widest text-[#7a80a0] font-semibold mb-1.5">
+                    <label className="block text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-1.5">
                       Lab Title
                     </label>
                     <input value={form.title} onChange={e => update('title', e.target.value)}
-                           className="w-full bg-[#1c2030] border border-[#272c3a] rounded-lg px-3 py-2.5
-                                      text-sm text-white outline-none focus:border-[#f0b429] transition-colors"
+                           className={fieldClass}
                            placeholder="e.g. Lab 5 — REST API with Express"/>
                   </div>
                   <div>
-                    <label className="block text-[10px] uppercase tracking-widest text-[#7a80a0] font-semibold mb-1.5">
+                    <label className="block text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-1.5">
                       Course
                     </label>
                     <select value={form.courseId} onChange={e => update('courseId', e.target.value)}
-                            className="w-full bg-[#1c2030] border border-[#272c3a] rounded-lg px-3 py-2.5
-                                       text-sm text-white outline-none focus:border-[#f0b429] transition-colors">
+                            className={fieldClass}>
                       <option value="">Select course…</option>
                       <option value="web301">WEB301 — Web Development</option>
                       <option value="db201">DB201 — Database Systems</option>
@@ -95,44 +97,40 @@ export default function CreateLabPage() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-[#7a80a0] font-semibold mb-1.5">
+                  <label className="block text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-1.5">
                     Description
                   </label>
                   <textarea value={form.description} onChange={e => update('description', e.target.value)}
                             rows={3}
-                            className="w-full bg-[#1c2030] border border-[#272c3a] rounded-lg px-3 py-2.5
-                                       text-sm text-white outline-none focus:border-[#f0b429] transition-colors resize-y"
+                            className={`${fieldClass} resize-y`}
                             placeholder="What will students build or explore in this lab?"/>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-[#7a80a0] font-semibold mb-1.5">
+                  <label className="block text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-1.5">
                     Objectives
                   </label>
                   <textarea value={form.objectives} onChange={e => update('objectives', e.target.value)}
                             rows={3}
-                            className="w-full bg-[#1c2030] border border-[#272c3a] rounded-lg px-3 py-2.5
-                                       text-sm text-white outline-none focus:border-[#f0b429] transition-colors resize-y"
+                            className={`${fieldClass} resize-y`}
                             placeholder="Learning outcomes — one per line"/>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] uppercase tracking-widest text-[#7a80a0] font-semibold mb-1.5">
+                    <label className="block text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-1.5">
                       Required Tools
                     </label>
                     <input value={form.toolsRequired} onChange={e => update('toolsRequired', e.target.value)}
-                           className="w-full bg-[#1c2030] border border-[#272c3a] rounded-lg px-3 py-2.5
-                                      text-sm text-white outline-none focus:border-[#f0b429] transition-colors"
+                           className={fieldClass}
                            placeholder="Node.js, Postman, Docker…"/>
                   </div>
                   <div>
-                    <label className="block text-[10px] uppercase tracking-widest text-[#7a80a0] font-semibold mb-1.5">
+                    <label className="block text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-1.5">
                       Submission Type
                     </label>
                     <select value={form.submissionType} onChange={e => update('submissionType', e.target.value)}
-                            className="w-full bg-[#1c2030] border border-[#272c3a] rounded-lg px-3 py-2.5
-                                       text-sm text-white outline-none focus:border-[#f0b429] transition-colors">
+                            className={fieldClass}>
                       <option value="file">File Upload (ZIP/PDF)</option>
                       <option value="github">GitHub Repository</option>
                       <option value="both">Both Allowed</option>
@@ -142,22 +140,20 @@ export default function CreateLabPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] uppercase tracking-widest text-[#7a80a0] font-semibold mb-1.5">
+                    <label className="block text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-1.5">
                       Deadline
                     </label>
                     <input type="datetime-local" value={form.deadline}
                            onChange={e => update('deadline', e.target.value)}
-                           className="w-full bg-[#1c2030] border border-[#272c3a] rounded-lg px-3 py-2.5
-                                      text-sm text-white outline-none focus:border-[#f0b429] transition-colors"/>
+                           className={fieldClass}/>
                   </div>
                   <div>
-                    <label className="block text-[10px] uppercase tracking-widest text-[#7a80a0] font-semibold mb-1.5">
+                    <label className="block text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-1.5">
                       Total Points
                     </label>
                     <input type="number" value={form.gradingPoints}
                            onChange={e => update('gradingPoints', +e.target.value)}
-                           className="w-full bg-[#1c2030] border border-[#272c3a] rounded-lg px-3 py-2.5
-                                      text-sm text-white outline-none focus:border-[#f0b429] transition-colors"/>
+                           className={fieldClass}/>
                   </div>
                 </div>
               </div>

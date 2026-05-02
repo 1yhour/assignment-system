@@ -17,21 +17,21 @@ export default async function TeacherDashboard() {
   const stats = await getTeacherStats();
 
   return (
-    <div>
+    <div className="min-h-screen bg-slate-50">
       {/* Topbar */}
-      <div className="sticky top-0 z-10 bg-[#0d0f12] border-b border-[#272c3a] px-8 py-5
-                      flex items-center justify-between">
+      <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-8 py-5
+                      flex items-center justify-between shadow-sm">
         <div>
-          <h1 className="text-2xl font-bold text-white" style={{fontFamily:'var(--font-dm-serif),serif'}}>
+          <h1 className="text-2xl font-bold text-slate-800" style={{fontFamily:'var(--font-dm-serif),serif'}}>
             Good morning, Dr. Rivera
           </h1>
-          <p className="text-sm text-[#7a80a0] mt-1">
+          <p className="text-sm text-slate-500 mt-1">
             3 assignments due this week
           </p>
         </div>
         <a href="/teacher/create"
-           className="flex items-center gap-2 bg-[#f0b429] text-[#0d0f12] font-bold
-                      text-sm px-4 py-2 rounded-lg hover:bg-[#e0a820] transition-colors">
+           className="flex items-center gap-2 bg-indigo-600 text-white font-bold
+                      text-sm px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm">
           + New Lab
         </a>
       </div>
@@ -39,10 +39,10 @@ export default async function TeacherDashboard() {
       <div className="p-8">
         {/* Stats */}
         <div className="grid grid-cols-4 gap-4 mb-7">
-          <StatCard label="Active Labs"        value={stats.activeLabs}      note="Across 3 courses"  accent="gold" />
+          <StatCard label="Active Labs"        value={stats.activeLabs}      note="Across 3 courses"    accent="indigo" />
           <StatCard label="Pending Reviews"    value={stats.pendingReviews}  note="↑ 6 since yesterday" accent="blue" />
-          <StatCard label="Graded This Week"   value={stats.gradedThisWeek}  note="Avg 76/100"        accent="green" />
-          <StatCard label="Late Submissions"   value={stats.lateSubmissions} note="Needs attention"   accent="red" />
+          <StatCard label="Graded This Week"   value={stats.gradedThisWeek}  note="Avg 76/100"          accent="green" />
+          <StatCard label="Late Submissions"   value={stats.lateSubmissions} note="Needs attention"     accent="red" />
         </div>
 
         <div className="grid grid-cols-2 gap-5">
