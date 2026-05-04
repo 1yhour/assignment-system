@@ -7,7 +7,7 @@ import {
   LogOut
 } from 'lucide-react';
 import { Button } from '../ui/button';
-import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
 
 const navItems = [
   { label: 'Dashboard',         href: '/teacher',             icon: LayoutDashboard, section: 'Overview' },
@@ -19,7 +19,8 @@ const navItems = [
 
 export default function TeacherSidebar() {
   const path = usePathname();
-  const router = useRouter();
+  const { user, logout } = useAuth();
+
   return (
     <aside className="w-[230px] flex-shrink-0 bg-white border-r border-slate-200
                       flex flex-col h-screen sticky top-0 shadow-sm">
@@ -68,14 +69,18 @@ export default function TeacherSidebar() {
       <div className="px-4 pb-6">
         <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
           <div className="bg-indigo-600 rounded-full w-8 h-8 flex items-center justify-center">
-            <span className="text-white font-bold text-xs">LY</span>
+            <span className="text-white font-bold text-xs">
+              {user?.name?.substring(0, 2).toUpperCase() || 'U'}
+            </span>
           </div>
 
           <div className="flex-1 min-w-0">
-            <div className="text-slate-800 font-semibold text-sm truncate">Lyhour</div>
+            <div className="text-slate-800 font-semibold text-sm truncate">
+              {user?.name || 'Teacher'}
+            </div>
           </div>
 
-          <Button onClick={() => router.push('/login')} size="sm"
+          <Button onClick={logout} size="sm"
                   className="bg-transparent border border-slate-200 hover:bg-slate-100 text-slate-400 hover:text-slate-600 h-8">
             <LogOut size={14}/>
           </Button>

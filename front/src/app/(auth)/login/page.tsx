@@ -1,18 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import AuthShell from "@/components/ui/AuthShell";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function LoginPage() {
-  const router = useRouter();
+  const { login, errors, clearErrors } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await login({ email, password });
+    } catch {
+      // errors are set in context
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <AuthShell
@@ -24,7 +39,14 @@ export default function LoginPage() {
         role: "Head of Operations, Meridian",
       }}
     >
-      <div className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {/* General error */}
+        {errors.general && (
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">
+            {errors.general[0]}
+          </div>
+        )}
+
         <div className="space-y-1.5">
           <Label htmlFor="email" className="text-slate-700 font-medium text-sm">
             Email address
@@ -33,8 +55,14 @@ export default function LoginPage() {
             type="email"
             id="email"
             placeholder="you@example.com"
-            className="h-11 bg-slate-50 border-slate-200 focus:bg-white rounded-lg"
+            value={email}
+            onChange={(e) => { setEmail(e.target.value); clearErrors(); }}
+            className="h-11 bg-slate-50 border-slate-200 text-black focus:bg-white rounded-lg"
+            required
           />
+          {errors.email && (
+            <p className="text-red-500 text-xs mt-1">{errors.email[0]}</p>
+          )}
         </div>
 
         <div className="space-y-1.5">
@@ -51,7 +79,10 @@ export default function LoginPage() {
               type={showPassword ? "text" : "password"}
               id="password"
               placeholder="••••••••"
-              className="h-11 bg-slate-50 border-slate-200 focus:bg-white rounded-lg pr-10"
+              value={password}
+              onChange={(e) => { setPassword(e.target.value); clearErrors(); }}
+              className="h-11 bg-slate-50 border-slate-200 text-black focus:bg-white rounded-lg pr-10"
+              required
             />
             <button
               type="button"
@@ -61,6 +92,9 @@ export default function LoginPage() {
               {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
+          {errors.password && (
+            <p className="text-red-500 text-xs mt-1">{errors.password[0]}</p>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
@@ -70,18 +104,28 @@ export default function LoginPage() {
           </label>
         </div>
 
-        <Button onClick={() => router.push("/")} className="w-full h-11 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg flex items-center justify-center gap-2 group">
-          Sign in
-          <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+        <Button
+          type="submit"
+          disabled={submitting}
+          className="w-full h-11 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg flex items-center justify-center gap-2 group"
+        >
+          {submitting ? (
+            <Loader2 size={16} className="animate-spin" />
+          ) : (
+            <>
+              Sign in
+              <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+            </>
+          )}
         </Button>
 
         <p className="text-center text-sm text-slate-500 pt-2">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/register" className="text-indigo-600 font-semibold hover:text-indigo-800">
             Create one free
           </Link>
         </p>
-      </div>
+      </form>
     </AuthShell>
   );
 }
