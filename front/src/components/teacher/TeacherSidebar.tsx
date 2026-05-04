@@ -22,27 +22,36 @@ export default function TeacherSidebar() {
   const { user, logout } = useAuth();
 
   return (
-    <aside className="w-[230px] flex-shrink-0 bg-white border-r border-slate-200
-                      flex flex-col h-screen sticky top-0 shadow-sm">
+    <aside className="w-full md:w-[230px] flex-shrink-0 bg-white border-b md:border-b-0 md:border-r border-slate-200
+                      flex flex-col md:h-screen sticky top-0 z-50 shadow-sm">
       {/* Logo */}
-      <div className="px-5 py-6 border-b border-slate-100">
-        <div className="text-indigo-600 text-xl font-bold" style={{fontFamily:'DM Serif Display,serif'}}>
-          LabFlow
+      <div className="px-5 py-4 md:py-6 border-b border-slate-100 flex items-center justify-between md:block">
+        <div>
+          <div className="text-indigo-600 text-xl font-bold" style={{fontFamily:'DM Serif Display,serif'}}>
+            LabFlow
+          </div>
+          <div className="hidden md:block text-[10px] text-slate-400 tracking-widest uppercase mt-1 font-semibold">
+            Teacher Portal
+          </div>
         </div>
-        <div className="text-[10px] text-slate-400 tracking-widest uppercase mt-1 font-semibold">
-          Teacher Portal
+        
+        {/* Mobile Logout (Hidden on md+) */}
+        <div className="md:hidden">
+          <Button onClick={logout} size="sm" variant="ghost" className="text-slate-500">
+            <LogOut size={18}/>
+          </Button>
         </div>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
+      <nav className="p-3 flex md:flex-col overflow-x-auto md:overflow-y-auto space-x-2 md:space-x-0 md:space-y-0.5 hide-scrollbar flex-shrink-0">
         {navItems.map((item) => {
           const isActive = path === item.href;
           const Icon = item.icon;
           return (
-            <div key={item.href}>
+            <div key={item.href} className="flex-shrink-0 md:w-full">
               {item.section && (
-                <div className="text-[10px] uppercase tracking-widest text-slate-400
+                <div className="hidden md:block text-[10px] uppercase tracking-widest text-slate-400
                                font-semibold px-3 pb-1 pt-3">
                   {item.section}
                 </div>
@@ -65,8 +74,8 @@ export default function TeacherSidebar() {
         })}
       </nav>
 
-      {/* Footer */}
-      <div className="px-4 pb-6">
+      {/* Desktop Footer (Hidden on mobile) */}
+      <div className="px-4 pb-6 mt-auto hidden md:block">
         <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
           <div className="bg-indigo-600 rounded-full w-8 h-8 flex items-center justify-center">
             <span className="text-white font-bold text-xs">

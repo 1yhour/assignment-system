@@ -19,8 +19,8 @@ export default async function TeacherDashboard() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Topbar */}
-      <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-8 py-5
-                      flex items-center justify-between shadow-sm">
+      <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-4 sm:px-8 py-4 sm:py-5
+                      flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0 shadow-sm">
         <div>
           <h1 className="text-2xl font-bold text-slate-800" style={{fontFamily:'var(--font-dm-serif),serif'}}>
             Good morning, Dr. Rivera
@@ -36,16 +36,16 @@ export default async function TeacherDashboard() {
         </a>
       </div>
 
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         {/* Stats */}
-        <div className="grid grid-cols-4 gap-4 mb-7">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-7">
           <StatCard label="Active Labs"        value={stats.activeLabs}      note="Across 3 courses"    accent="indigo" />
           <StatCard label="Pending Reviews"    value={stats.pendingReviews}  note="↑ 6 since yesterday" accent="blue" />
           <StatCard label="Graded This Week"   value={stats.gradedThisWeek}  note="Avg 76/100"          accent="green" />
           <StatCard label="Late Submissions"   value={stats.lateSubmissions} note="Needs attention"     accent="red" />
         </div>
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <UpcomingDeadlines />
           <SubmissionRates />
         </div>
