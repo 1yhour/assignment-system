@@ -26,28 +26,41 @@ class DatabaseSeeder extends Seeder
     {
         $accounts = [
             [
-                'name'  => 'Admin User',
-                'email' => 'admin@labflow.test',
-                'role'  => 'admin',
+                'name'     => 'Admin User',
+                'email'    => 'admin@labflow.test',
+                'role'     => 'admin',
+                'password' => 'password',
             ],
             [
-                'name'  => 'Teacher User',
-                'email' => 'teacher@labflow.test',
-                'role'  => 'teacher',
+                'name'     => 'Teacher User',
+                'email'    => 'teacher@labflow.test',
+                'role'     => 'teacher',
+                'password' => 'password',
             ],
             [
-                'name'  => 'Student User',
-                'email' => 'student@labflow.test',
-                'role'  => 'student',
-            ],
+                'name'     => 'Student User',
+                'email'    => 'student@labflow.test',
+                'role'     => 'student',
+                'password' => 'password',
+            ]
         ];
+
+        // Only add the extra admin account if ADMIN_EMAIL is set in the .env file
+        if (env('ADMIN_EMAIL')) {
+            $accounts[] = [
+                'name'     => env('ADMIN_NAME', 'Super Admin'),
+                'email'    => env('ADMIN_EMAIL'),
+                'role'     => 'admin',
+                'password' => env('ADMIN_PASSWORD', 'password'),
+            ];
+        }
 
         foreach ($accounts as $account) {
             User::updateOrCreate(
                 ['email' => $account['email']],
                 [
                     'name'     => $account['name'],
-                    'password' => Hash::make('password'),
+                    'password' => Hash::make($account['password']), // <-- Fix is here
                     'role'     => $account['role'],
                 ]
             );
