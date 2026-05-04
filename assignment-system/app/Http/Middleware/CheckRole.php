@@ -10,11 +10,28 @@ class CheckRole
 {
     /**
      * Handle an incoming request.
+     * Usage: ->middleware('role:admin') or ->middleware('role:teacher,admin')
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, string ...$roles): Response
     {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated.'], 401);
+        }
+
+
+        
+        if (!in_array($user->role, $roles)) {
+            return response()->json([
+                'message' => 'Forbidden. You do not have permission to access this resource.',
+                'required_roles' => $roles,
+                'your_role'      => $user->role,
+            ], 403);
+        }
+
         return $next($request);
     }
 }
